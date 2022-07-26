@@ -1,10 +1,10 @@
 import 'dart:io';
 
 class BirdModel {
-  final String birdName;
+  final String? birdName;
   final double latitude;
   final double longitude;
-  final String birdDescription;
+  final String? birdDescription;
   final File image;
 
   BirdModel({
