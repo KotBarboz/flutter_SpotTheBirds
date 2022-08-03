@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:latlong2/latlong.dart';
+import 'package:spot_the_bird/bloc/bird_post_cubit.dart';
 import 'package:spot_the_bird/models/bird_post_model.dart';
 
 class AddBirdScreen extends StatefulWidget {
@@ -19,18 +21,25 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
   String? name;
   String? description;
 
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late final FocusNode _descriptionFocusNode;
 
   void _submit(BirdModel birdModel) {
-    if (!_formKey.currentState!.validate()) {
+    final FormState? form = _formKey.currentState;
+
+    if (!form!.validate()) {
       return;
     }
 
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Saving Data')),
+    );
+
     _formKey.currentState!.save();
 
-
+    context.read<BirdPostCubit>().addBirdPost(birdModel);
 
 
     Navigator.of(context).pop();
@@ -86,7 +95,7 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
                     FocusScope.of(context).requestFocus(_descriptionFocusNode);
                   },
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value?.isEmpty ?? true) {
                       return "Please enter a name";
                     }
                     if (value!.length < 2) {
@@ -115,13 +124,15 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
                     description = value!.trim();
                   },
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a description";
+                    if (value?.isEmpty ?? true) {
+                       return "Please enter a description";
                     }
                     if (value!.length < 2) {
+                      print("Please enter a longer description");
                       return "Please enter a longer description";
                     }
 
+                    print(value);
                     return null;
                   },
                 ),
@@ -143,12 +154,12 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
               birdDescription: description,
               birdName: name);
 
-          // context.read<BirdPostCubit>().addPost(birdModel);
+          // context.read<BirdPostCubit>().addBirdPost(birdModel);
 
           //   }
           // }
           _submit(birdModel);
-          Navigator.of(context).pop();
+
         },
         child: const Icon(
           Icons.check,
