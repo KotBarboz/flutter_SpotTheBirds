@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => LocationCubit()..getLocation(),
         ),
         BlocProvider<BirdPostCubit>(
-          create: (BuildContext context) => BirdPostCubit(),
+          create: (BuildContext context) => BirdPostCubit()..loadPosts(),
         ),
       ],
       child: MaterialApp(
