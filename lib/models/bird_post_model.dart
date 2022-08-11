@@ -1,6 +1,7 @@
 import 'dart:io';
 
 class BirdModel {
+  int? id;
   final String? birdName;
   final double latitude;
   final double longitude;
@@ -8,6 +9,7 @@ class BirdModel {
   final File image;
 
   BirdModel({
+    this.id,
     required this.image,
     required this.latitude,
     required this.longitude,
