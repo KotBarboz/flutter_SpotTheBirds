@@ -26,7 +26,7 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
 
   late final FocusNode _descriptionFocusNode;
 
-  void _submit(BirdModel birdModel) {
+  void _submit() {
     final FormState? form = _formKey.currentState;
 
     if (!form!.validate()) {
@@ -38,6 +38,15 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
     );
 
     _formKey.currentState!.save();
+
+
+    final BirdModel birdModel = BirdModel(
+        image: widget.image,
+        latitude: widget.latLng.latitude,
+        longitude: widget.latLng.longitude,
+        birdDescription: description,
+        birdName: name);
+
 
     context.read<BirdPostCubit>().addBirdPost(birdModel);
 
@@ -111,14 +120,8 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) {
 
-                    final BirdModel birdModel = BirdModel(
-                        image: widget.image,
-                        latitude: widget.latLng.latitude,
-                        longitude: widget.latLng.longitude,
-                        birdDescription: description,
-                        birdName: name);
 
-                    _submit(birdModel);
+                    _submit();
                   },
                   onSaved: (value) {
                     description = value!.trim();
@@ -128,8 +131,7 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
                        return "Please enter a description";
                     }
                     if (value!.length < 2) {
-                      print("Please enter a longer description");
-                      return "Please enter a longer description";
+                       return "Please enter a longer description";
                     }
 
                     print(value);
@@ -144,21 +146,7 @@ class _AddBirdScreenState extends State<AddBirdScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //
-
-          // if (description != null && name != null) {
-          //   if (description != "" && name != "") {
-          final BirdModel birdModel = BirdModel(
-              image: widget.image,
-              latitude: widget.latLng.latitude,
-              longitude: widget.latLng.longitude,
-              birdDescription: description,
-              birdName: name);
-
-          // context.read<BirdPostCubit>().addBirdPost(birdModel);
-
-          //   }
-          // }
-          _submit(birdModel);
+          _submit();
 
         },
         child: const Icon(

@@ -9,6 +9,7 @@ import 'package:spot_the_bird/bloc/bird_post_cubit.dart';
 import 'package:spot_the_bird/bloc/location_cubit.dart';
 import 'package:spot_the_bird/models/bird_post_model.dart';
 import 'package:spot_the_bird/screens/add_bird_screen.dart';
+import 'package:spot_the_bird/screens/bird_info_screen.dart';
 
 class MapScreen extends StatelessWidget {
   final MapController _mapController = MapController();
@@ -45,7 +46,10 @@ class MapScreen extends StatelessWidget {
             builder: (ctx) {
               return GestureDetector(
                 onTap: () {
-
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => BirdInfoScreen(birdModel: post)),
+                  );
                 },
                 child: Container(
                   // color: Colors.blueAccent,
